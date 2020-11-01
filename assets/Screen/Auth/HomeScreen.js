@@ -1,11 +1,9 @@
+// set 1 color ： https://colorhunt.co/palette/92306
+
 import React from 'react';
 import { Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, View,Image ,ViewBase } from 'react-native';
 import 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { color } from 'react-native-reanimated';
-
-// set 1 color ： https://colorhunt.co/palette/92306
 
 
 const Stack = createStackNavigator();
@@ -14,7 +12,7 @@ function HomeScreen({navigation}) {
   return (
     <View style={styles.container}>
      <View style={styles.logo} >
-      <Image source={require("../image/logo.png")} />
+      <Image source={require("../../image/logo.png")} />
     </View> 
 
     <TouchableOpacity style={[styles.homeButton,{backgroundColor:"#fdfdfd"}]} onPress={()=>navigation.navigate('loginpage')}>
