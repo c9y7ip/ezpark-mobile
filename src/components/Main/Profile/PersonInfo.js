@@ -1,18 +1,18 @@
 import React from 'react';
-import { Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, View,Image ,ViewBase } from 'react-native';
+import { Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image, ViewBase } from 'react-native';
 import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import Card from './card';
-import Vehicle from './vehicle';
+import Card from './Card/Card';
+import Vehicle from './Vehicle/Vehicle';
 
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 
-function profile(){
-  return(
+function profile() {
+  return (
     <View>
       <View style={styles.header}></View>
       <Text>Name</Text>
@@ -24,30 +24,30 @@ function profile(){
   )
 }
 
-function draw(){
-  return(
+function draw() {
+  return (
     <Drawer.Navigator initialRouteName="Home">
-    <Drawer.Screen name="Profile" component={profile} />
-    <Drawer.Screen name="Card" component={Card} />
-    <Drawer.Screen name="Vehicle" component={Vehicle} />
+      <Drawer.Screen name="Profile" component={profile} />
+      <Drawer.Screen name="Card" component={Card} />
+      <Drawer.Screen name="Vehicle" component={Vehicle} />
     </Drawer.Navigator>
   )
 }
 
-function PersonInfo({navigation}) {
+function PersonInfo({ navigation }) {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="test" options={{headerShown:false}} component={draw}/>
+      <Stack.Screen name="test" options={{ headerShown: false }} component={draw} />
     </Stack.Navigator>
 
-    );
+  );
 }
 
 
 const styles = StyleSheet.create({
-  header:{
+  header: {
     backgroundColor: "#00BFFF",
-    height:200,
+    height: 200,
   }
 })
 
