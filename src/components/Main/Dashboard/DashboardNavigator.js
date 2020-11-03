@@ -8,7 +8,7 @@ const Stack = createStackNavigator()
 
 const DashboardNavigator = () => {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator headerMode="none">
             <Stack.Screen name='menu' component={MenuScreen} />
             <Stack.Screen name='payment' component={PaymentScreen} />
             <Stack.Screen name='scan' component={ScanScreen} />
