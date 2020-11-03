@@ -11,6 +11,7 @@ const Stack = createStackNavigator();
 
 function RegisterScreen({ navigation }) {
 
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
@@ -19,7 +20,7 @@ function RegisterScreen({ navigation }) {
   const connect = () => {
 
     if (password == passwordConfirm) {
-      fetch('http://192.168.0.13:3000/show', {
+      fetch('http://192.168.0.13:5000/auth/register', {
         method: 'post',
 
         headers: {
@@ -28,12 +29,12 @@ function RegisterScreen({ navigation }) {
         },
 
         body: JSON.stringify({
-          account: email,
+          name:name,
           password: password,
+          email: email,
           phone: phone
         })
       })
-        .then(res => res.json())
         .catch(function (error) {
           console.error(error.message);
         })
@@ -45,6 +46,7 @@ function RegisterScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Sign Up</Text>
+      <TextInput placeholder="Name" style={styles.input} onChangeText={text => setName(text)} />
       <TextInput placeholder="Email" style={styles.input} onChangeText={text => setEmail(text)} />
       <TextInput placeholder="Password" style={styles.input} onChangeText={text => setPassword(text)} />
       <TextInput placeholder="Password confirm" style={styles.input} onChangeText={text => setPasswordConfirm(text)} />
