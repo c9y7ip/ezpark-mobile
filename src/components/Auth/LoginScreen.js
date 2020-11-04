@@ -7,6 +7,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import { Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image, ViewBase } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import PersonInfo from '../Main/Profile/PersonInfo';
 
 const Stack = createStackNavigator();
 
