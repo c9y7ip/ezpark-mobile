@@ -5,16 +5,14 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator, DrawerItem,DrawerContentScrollView,DrawerItemList } from '@react-navigation/drawer';
 import Card from './Card/Card';
 import Vehicle from './Vehicle/Vehicle';
-import LoginScreen from '../../Auth/LoginScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import AuthStack from '../../Auth/AuthNavigator';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 
 function profile({navigation}) {
-  
+
   const getData = async () => {
     try {
       const value = await AsyncStorage.getItem("token")
@@ -39,7 +37,6 @@ function profile({navigation}) {
       <Text>vehicle</Text>
       <Text>Parking info</Text>
       <Button title="back" onPress={()=>navigation.navigate('home')} />
-      {/* <Button title="back" onPress={()=>console.warn({token})} /> */}
     </View>
   )
 }

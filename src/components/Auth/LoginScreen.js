@@ -7,7 +7,6 @@ import { TextInput } from 'react-native-gesture-handler';
 import { Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image, ViewBase } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import PersonInfo from '../Main/Profile/PersonInfo';
 
 const Stack = createStackNavigator();
 
@@ -21,7 +20,7 @@ const LoginScreen = ({ navigation }) => {
 
 
   const connect =  () => {
-    axios.post('http://192.168.0.13:5000/auth/login',{
+    axios.post('http://localhost:5000/auth/login',{
       email:email,
       password:password})
       .then(async (tok)=>{
