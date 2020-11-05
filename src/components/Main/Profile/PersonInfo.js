@@ -14,7 +14,22 @@ const Drawer = createDrawerNavigator();
 
 
 function profile({navigation}) {
+  
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem("token")
+      if(value !== null) {
+        console.warn(value)
+      }
+    } catch(e) {
+      console.warn(e)
+    }
+  }
 
+  useEffect(()=>{
+    getData()
+  },[])
+  
   return (
     <View>
       <View style={styles.header}></View>
