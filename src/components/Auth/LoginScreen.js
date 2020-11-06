@@ -4,8 +4,8 @@ import React, { useState,useEffect }  from 'react';
 import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import { TextInput } from 'react-native-gesture-handler';
-import { Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image, ViewBase } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, AsyncStorage,Image, ViewBase ,} from 'react-native';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 const Stack = createStackNavigator();

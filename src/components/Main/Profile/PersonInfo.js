@@ -1,11 +1,11 @@
 import React , { useState,useEffect }from 'react';
-import { Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image, ViewBase } from 'react-native';
+import { Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image, ViewBase,AsyncStorage } from 'react-native';
 import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator, DrawerItem,DrawerContentScrollView,DrawerItemList } from '@react-navigation/drawer';
 import Card from './Card/Card';
 import Vehicle from './Vehicle/Vehicle';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
