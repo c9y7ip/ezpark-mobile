@@ -4,8 +4,8 @@ import React, { useState,useEffect }  from 'react';
 import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import { TextInput } from 'react-native-gesture-handler';
-import { Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image, ViewBase } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, AsyncStorage,Image, ViewBase ,} from 'react-native';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 const Stack = createStackNavigator();
@@ -18,35 +18,47 @@ const LoginScreen = ({ navigation }) => {
   const [token, setToken] = useState("");
   const [password, setPassword] = useState("");
 
+
   const connect =  () => {
-
-    fetch('http://192.168.0.13:5000/auth/login', {
-      method: 'post',
-
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-
-      body: JSON.stringify({
-        email: email,
-        password: password
-      })
-      })
-      .then((res)=>{
-        return res.text()
-      })
+    axios.post('http://localhost:5000/auth/login',{
+      email:email,
+      password:password})
       .then(async (tok)=>{
         try{
-          await AsyncStorage.setItem("token",tok)
+          await AsyncStorage.setItem("token",tok.data)
           navigation.navigate('mainpage')
         }catch(e){
           console.warn(e)
         }
       })
-      .catch(function (error) {
-        console.error(error.message);
-      })
+
+    // fetch('http://192.168.0.13:5000/auth/login', {
+    //   method: 'post',
+
+    //   headers: {
+    //     Accept: 'application/json',
+    //     'Content-Type': 'application/json'
+    //   },
+
+    //   body: JSON.stringify({
+    //     email: email,
+    //     password: password
+    //   })
+    //   })
+    //   .then((res)=>{
+    //     return res.text()
+    //   })
+    //   .then(async (tok)=>{
+    //     try{
+    //       await AsyncStorage.setItem("token",tok)
+    //       navigation.navigate('mainpage')
+    //     }catch(e){
+    //       console.warn(e)
+    //     }
+    //   })
+    //   .catch(function (error) {
+    //     console.error(error.message);
+    //   })
   }
 
   const getData = async () => {
