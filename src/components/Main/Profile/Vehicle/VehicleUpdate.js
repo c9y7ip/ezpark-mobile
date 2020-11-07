@@ -17,7 +17,7 @@ function VehicleUpdate({navigation}) {
 
   const connect = ()=>{
 
-    fetch('http://192.168.0.13:3000/show',{
+    fetch('http://localhost:3000/show',{
       method:'post',
   
       headers:{

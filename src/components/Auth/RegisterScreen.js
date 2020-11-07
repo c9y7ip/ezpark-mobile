@@ -20,7 +20,7 @@ function RegisterScreen({ navigation }) {
   const connect = () => {
 
     if (password == passwordConfirm) {
-      fetch('http://192.168.0.13:5000/auth/register', {
+      fetch('http://localhost:5000/auth/register', {
         method: 'post',
 
         headers: {

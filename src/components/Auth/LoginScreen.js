@@ -20,7 +20,7 @@ const LoginScreen = ({ navigation }) => {
 
 
   const connect =  () => {
-    axios.post('http://192.168.0.13:5000/auth/login',{
+    axios.post('http://localhost:5000/auth/login',{
       email:email,
       password:password})
       .then(async (tok)=>{
@@ -31,34 +31,6 @@ const LoginScreen = ({ navigation }) => {
           console.warn(e)
         }
       })
-
-    // fetch('http://192.168.0.13:5000/auth/login', {
-    //   method: 'post',
-
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json'
-    //   },
-
-    //   body: JSON.stringify({
-    //     email: email,
-    //     password: password
-    //   })
-    //   })
-    //   .then((res)=>{
-    //     return res.text()
-    //   })
-    //   .then(async (tok)=>{
-    //     try{
-    //       await AsyncStorage.setItem("token",tok)
-    //       navigation.navigate('mainpage')
-    //     }catch(e){
-    //       console.warn(e)
-    //     }
-    //   })
-    //   .catch(function (error) {
-    //     console.error(error.message);
-    //   })
   }
 
   const getData = async () => {
