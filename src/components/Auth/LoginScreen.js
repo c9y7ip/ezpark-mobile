@@ -20,7 +20,7 @@ const LoginScreen = ({ navigation }) => {
 
 
   const connect =  () => {
-    axios.post('http://localhost:5000/auth/login',{
+    axios.post('http://192.168.0.13:5000/auth/login',{
       email:email,
       password:password})
       .then(async (tok)=>{
