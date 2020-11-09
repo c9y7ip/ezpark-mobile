@@ -6,7 +6,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { TextInput } from 'react-native-gesture-handler';
 import { Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, AsyncStorage,Image, ViewBase ,} from 'react-native';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
+import authApi from '../../api/authApi'
+
 
 const Stack = createStackNavigator();
 
@@ -20,17 +21,11 @@ const LoginScreen = ({ navigation }) => {
 
 
   const connect =  () => {
-    axios.post('http://localhost:5000/auth/login',{
-      email:email,
-      password:password})
-      .then(async (tok)=>{
-        try{
-          await AsyncStorage.setItem("token",tok.data)
-          navigation.navigate('mainpage')
-        }catch(e){
-          console.warn(e)
-        }
-      })
+    authApi.login(email, password)
+      .then((token) => {
+        return AsyncStorage.setItem("token", token)
+      }).then(() => navigation.navigate('mainpage'))
+      .catch(err => console.warn(err))
 
     // fetch('http://192.168.0.13:5000/auth/login', {
     //   method: 'post',

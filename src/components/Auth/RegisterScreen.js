@@ -5,7 +5,7 @@ import 'react-native-gesture-handler';
 import { TextInput } from 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image, ViewBase, Alert } from 'react-native';
-
+import authApi from '../../api/authApi'
 
 const Stack = createStackNavigator();
 
@@ -18,28 +18,21 @@ function RegisterScreen({ navigation }) {
   const [phone, setPhone] = useState("");
 
   const connect = () => {
-
-    if (password == passwordConfirm) {
-      fetch('http://localhost:5000/auth/register', {
-        method: 'post',
-
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-
-        body: JSON.stringify({
-          name:name,
-          password: password,
-          email: email,
-          phone: phone
+    console.log('sign up')
+    if (password === passwordConfirm) {
+      console.log('ahha')
+      authApi.register(name, password, email, phone)
+        .then((user) => {
+          console.log(user)
+          //DO something with user.
+          navigation.navigate('mainpage')
+        }).catch(err => {
+          console.log(err)
+          alert(err)
         })
-      })
-        .catch(function (error) {
-          console.error(error.message);
-        })
+
     } else {
-      Alert.alert("Password incorrect");
+      Alert.alert("Confirm password doesn't match");
     }
   }
 
