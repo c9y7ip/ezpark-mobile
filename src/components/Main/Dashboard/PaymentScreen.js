@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, TextInput } from 'react-native'
+import { View, StyleSheet, TextInput, Text } from 'react-native'
 import styled from 'styled-components/native'
 import CustomButton from '../../GlobalComp/CustomButton'
 import DropdownComp from '../../GlobalComp/DropdownComp'
@@ -18,17 +18,26 @@ const DropdownWrapper = styled.View`
     margin-top: 30px;
     width: 100%
 `
+const HourText = styled.Text`
+    font-size: 50px;
+    margin-left: 20px;
+`
+const DurationSection = styled.View`
+    margin-top: 30px
+    flex-direction: row;
+`
 
 const PaymentScreen = () => {
     const [car, selectCar] = useState(null)
     const [cars, setCars] = useState([])
     const [showDialog, dialogToggle] = useState(false)
     const [status, setStatus] = useState(null)
+    const [duration, onChangeDuration] = useState();
 
     const navigation = useNavigation()
 
     useEffect(() => {
-
+        fetchCars()
     }, [])
 
     const fetchCars = () => {
@@ -45,10 +54,6 @@ const PaymentScreen = () => {
 
     }
 
-    const onChangeDuration = () => {
-        // TODO: implement getPrice call based on duration
-    }
-
     const navigateHandler = () => {
         navigation.navigate('menu')
     }
@@ -63,6 +68,16 @@ const PaymentScreen = () => {
                     selectHandler={onSelect}
                 />
             </DropdownWrapper>
+
+            <DurationSection>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={text => onChangeDuration(text)}
+                    value={value}
+                    keyboardType={'numeric'}
+                />
+                <HourText>Hr</HourText>
+            </DurationSection>
 
             <View style={styles.wrapper} >
                 <CustomButton text="Confirm Payment" handler={onPressPay} customStyle={styles.btn} />
@@ -89,5 +104,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignSelf: 'flex-end',
         marginTop: 500,
+    },
+    input: {
+        width: 100,
+        height: 50,
+        fontSize: 40,
+        textAlign: 'center',
+        backgroundColor: 'white',
+        borderRadius: 10
     }
 });
