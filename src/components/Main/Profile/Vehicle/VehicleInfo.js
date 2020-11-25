@@ -3,12 +3,13 @@ import { Button, SafeAreaView, StyleSheet, Text, TextInput,TouchableOpacity,Asyn
 import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import axios from 'axios';
+import VehicleUpdate from './VehicleUpdate';
 
 const Stack = createStackNavigator();
 const baseURL = 'http://192.168.0.13:5000'
 // const baseURL = 'http://35.202.57.20:5000'
 
-function VehicleUpdate({navigation}) {
+function VehicleInfo({navigation}) {
 
   const [license, setLicense] = useState("");
   const [createBy, setCreatedBy] = useState("");
@@ -57,6 +58,10 @@ function VehicleUpdate({navigation}) {
   return (
     <View style={styles.container}>   
       <View style={styles.header}></View>
+
+      <TouchableOpacity style={styles.saveButtonCon} onPress={()=>navigation.navigate('VehicleUpdate')}>
+        <Text style={styles.saveButton}> Edit</Text>
+      </TouchableOpacity>     
          
       <Text style={styles.label}>License</Text>
       <TextInput style={styles.textInput} placeholder="license" onChangeText={text=>setLicense(text)} />
@@ -73,9 +78,7 @@ function VehicleUpdate({navigation}) {
       <Text style={styles.label}>Session</Text>
       <TextInput style={styles.textInput} placeholder="Session" onChangeText={text=>setSession(text)} />
 
-      <TouchableOpacity style={styles.saveButtonCon} onPress={connect}>
-        <Text style={styles.saveButton}> Save</Text>
-      </TouchableOpacity>     
+
     </View>
     );
 }
@@ -116,4 +119,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default VehicleUpdate;
+export default VehicleInfo;

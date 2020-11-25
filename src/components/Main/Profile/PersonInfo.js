@@ -5,6 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator, DrawerItem,DrawerContentScrollView,DrawerItemList } from '@react-navigation/drawer';
 import Card from './Card/Card';
 import Vehicle from './Vehicle/Vehicle';
+import VehicleUpdate from './Vehicle/VehicleUpdate';
+import VehicleInfo from './Vehicle/VehicleInfo';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createStackNavigator();
@@ -72,6 +74,8 @@ function PersonInfo({ navigation }) {
   return (
     <Stack.Navigator>
       <Stack.Screen name="test" options={{ headerShown: false }} component={draw} />
+      <Stack.Screen name="VehicleInfo" options={{ headerShown: false }} component={VehicleInfo} />
+      <Stack.Screen name="VehicleUpdate" options={{ headerShown: false }} component={VehicleUpdate} />
     </Stack.Navigator>
 
   );

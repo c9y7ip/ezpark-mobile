@@ -23,7 +23,7 @@ const LoginScreen = ({ navigation }) => {
   const connect =  () => {
     authApi.login(email, password)
       .then((token) => {
-        return AsyncStorage.setItem("token", token)
+        return AsyncStorage.setItem("token", token.token)
       }).then(() => navigation.navigate('mainpage'))
       .catch(err => console.warn(err))
 
