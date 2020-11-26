@@ -10,10 +10,15 @@ function MenuScreen() {
     navigation.navigate('scan')
   }
 
+  const navigatePay = () => {
+    navigation.navigate('payment')
+  }
+
   return (
     <View style={styles.container} >
       <Text style={styles.title}>Dashboard</Text>
       <CustomButton text="Scan To Pay" handler={onPressPay} customStyle={btnStyle} />
+      <CustomButton text="Payment" handler={navigatePay} />
 
     </View>
   );
