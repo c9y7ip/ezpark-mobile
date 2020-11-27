@@ -41,8 +41,8 @@ function RegisterScreen({ navigation }) {
       <Text style={styles.text}>Sign Up</Text>
       <TextInput placeholder="Name" style={styles.input} onChangeText={text => setName(text)} />
       <TextInput placeholder="Email" style={styles.input} onChangeText={text => setEmail(text)} />
-      <TextInput placeholder="Password" style={styles.input} onChangeText={text => setPassword(text)} />
-      <TextInput placeholder="Password confirm" style={styles.input} onChangeText={text => setPasswordConfirm(text)} />
+      <TextInput placeholder="Password" secureTextEntry={true} style={styles.input} onChangeText={text => setPassword(text)} />
+      <TextInput placeholder="Password confirm" secureTextEntry={true} style={styles.input} onChangeText={text => setPasswordConfirm(text)} />
       <TextInput placeholder="Phone" style={styles.input} onChangeText={text => setPhone(text)} />
       <Button title='Sign Up' onPress={connect} />
 
@@ -74,10 +74,11 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 2,
     marginBottom: 15,
-    borderRadius: 25,
+    borderRadius: 10,
     paddingLeft: 8,
     borderColor: '#777',
     width: 200,
+    height: 40
   }
 
 })

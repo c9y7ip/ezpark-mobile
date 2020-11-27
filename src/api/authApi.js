@@ -1,9 +1,7 @@
 import axios from 'axios';
+import config from './config'
 
-// swap baseURL here so that it applies to all api requests.
-
-// const baseURL = 'http://localhost:5000'
-const baseURL = 'http://34.67.193.145'
+const baseURL = config.baseURL
 
 const login = (email, password) => {
     console.log('logging in')
@@ -21,6 +19,7 @@ const login = (email, password) => {
 }
 
 const register = (name, password, email, phone) => {
+    console.log(baseURL)
     return axios.post(`${baseURL}/auth/register`, {
         name: name,
         password: password,

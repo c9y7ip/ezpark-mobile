@@ -1,10 +1,10 @@
 // set 2 color : https://colorhunt.co/palette/212648
 
-import React, { useState,useEffect }  from 'react';
+import React, { useState, useEffect } from 'react';
 import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import { TextInput } from 'react-native-gesture-handler';
-import { Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, AsyncStorage,Image, ViewBase ,} from 'react-native';
+import { Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, AsyncStorage, Image, ViewBase, } from 'react-native';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import authApi from '../../api/authApi'
 
@@ -20,11 +20,17 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
 
 
-  const connect =  () => {
+  const connect = () => {
     authApi.login(email, password)
-      .then((token) => {
-        return AsyncStorage.setItem("token", token.token)
-      }).then(() => navigation.navigate('mainpage'))
+      .then((response) => {
+        console.log(response.token)
+        return AsyncStorage.setItem("token", response.token)
+      }).then(() => {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'mainpage' }],
+        })
+      })
       .catch(err => console.warn(err))
 
     // fetch('http://192.168.0.13:5000/auth/login', {
@@ -59,26 +65,26 @@ const LoginScreen = ({ navigation }) => {
   const getData = async () => {
     try {
       const value = await AsyncStorage.getItem("token")
-      if(value !== null) {
+      if (value !== null) {
         setToken(value)
       }
-    } catch(e) {
+    } catch (e) {
       console.warn(e)
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     getData()
-  },[])
+  }, [])
 
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Log In</Text>
       <Text>{token}</Text>
       <TextInput style={styles.input} placeholder="Email" onChangeText={text => setEmail(text)} />
-      <TextInput style={styles.input} placeholder="Password" onChangeText={text => setPassword(text)} />
+      <TextInput secureTextEntry={true} style={styles.input} placeholder="Password" onChangeText={text => setPassword(text)} />
       {/* <Button title='Login' onPress={() => navigation.navigate('mainpage')} /> */}
-      <Button title='Login' onPress={connect}/>
+      <Button title='Login' onPress={connect} />
 
       <View style={{ flexDirection: "row", marginTop: 15 }}>
         <Text>Do not have account?</Text>
@@ -105,10 +111,11 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 2,
     marginBottom: 25,
-    borderRadius: 25,
+    borderRadius: 10,
     paddingLeft: 8,
     borderColor: '#777',
     width: 200,
+    height: 40
   }
 })
 
