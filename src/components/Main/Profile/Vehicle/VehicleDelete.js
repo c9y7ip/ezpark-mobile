@@ -3,10 +3,13 @@ import { Button, SafeAreaView, StyleSheet, Text, TextInput,TouchableOpacity,Asyn
 import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import axios from 'axios';
+import DropDownPicker from 'react-native-dropdown-picker'
+import config from '../../../../api/config';
+
 
 const Stack = createStackNavigator();
 
-function VehicleUpdate({navigation}) {
+function VehicleDelete({navigation}) {
 
   const [license, setLicense] = useState("");
   const [createBy, setCreatedBy] = useState("");
@@ -15,7 +18,11 @@ function VehicleUpdate({navigation}) {
   const [Session, setSession] = useState("");
   const [token, setToken] = useState("");
 
-  let data = {license:license,createBy:createBy,Province:Province,Description:Description,Session:Session}
+  let data = {license:license,
+            createBy:createBy,
+            Province:Province,
+            Description:Description
+            ,Session:Session}
 
   
   const getData = async () => {
@@ -30,50 +37,66 @@ function VehicleUpdate({navigation}) {
     }
   }
 
-  useEffect(()=>{
-    getData()
-  },[])
+  let myCar = []
 
-  const connect = ()=>{
-
-    console.log('Update car info')
+  const getCar = ()=>{
+    console.log('get car info')
     console.log(token)
-    return axios.put(`${baseURL}/car/edit`,{data},{
+    return axios.get(`${config.baseURL}/car/get`,{
       headers:{Authorization:token}
     })
       .then(res=>{
-        console.log(res)
+        res.data.forEach(e => {
+            console.log(e.license)
+            myCar.push({label:e.license,value:e.license})
+        });
         return res
       })
       .catch(err=>{
         console.log(err)
         return err
       })
-
   }
+
+  useEffect(()=>{
+    getData(),
+    getCar()
+  },[])
+
+  const deleteCar = ()=>{
+    console.log('Delete car info')
+    console.log(token)
+    return axios.post(`${config.baseURL}/car/delete`,{license:license},
+    {
+      headers:{Authorization:token}
+    })
+      .then(res=>{
+        console.log(res.data)
+        return res
+      })
+      .catch(err=>{
+        console.log(err)
+        return err
+      })
+  }
+
 
   return (
     <View style={styles.container}>   
       <View style={styles.header}></View>
-         
-      <Text style={styles.label}>License</Text>
-      <TextInput style={styles.textInput} placeholder="license" onChangeText={text=>setLicense(text)} />
-
-      <Text style={styles.label}>Created By</Text>
-      <TextInput style={styles.textInput} placeholder="Created By" onChangeText={text=>setCreatedBy(text)} />
-
-      <Text style={styles.label}>Province</Text>
-      <TextInput style={styles.textInput} placeholder="Province" onChangeText={text=>setProvince(text)} />
-
-      <Text style={styles.label}>Description</Text>
-      <TextInput style={styles.textInput} placeholder="Description" onChangeText={text=>setDesciption(text)} />
-
-      <Text style={styles.label}>Session</Text>
-      <TextInput style={styles.textInput} placeholder="Session" onChangeText={text=>setSession(text)} />
-
-      <TouchableOpacity style={styles.saveButtonCon} onPress={connect}>
-        <Text style={styles.saveButton}> Save</Text>
-      </TouchableOpacity>     
+      <Text style={styles.text}>Select license that want to remove</Text>
+      <DropDownPicker
+          placeholder="Select a car"
+          items={myCar}
+          containerStyle={{height:40,width:300,marginLeft:"14%"}}
+          itemStlye={{justifyContent:'flex-start'}}
+          onChangeItem={item => {
+            setLicense(item.value)
+        }}
+      />   
+       <TouchableOpacity style={styles.saveButtonCon} onPress={deleteCar}>
+        <Text style={styles.saveButton}> Delete</Text>
+      </TouchableOpacity>         
     </View>
     );
 }
@@ -83,17 +106,15 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginTop: 10,
   },
+  text:{
+    fontWeight: "bold",
+    fontSize: 20,
+    margin: 20,
+    textAlign:'center',
+  },
   header:{
     backgroundColor: "#00BFFF",
     height:200,
-  },
-  textInput: {
-    padding: 5,
-    marginLeft: 50,
-    margin:5,
-    marginRight:50,
-    borderBottomColor: '#000', 
-    borderBottomWidth: 2     
   },
   saveButton:{
     fontSize: 18,
@@ -107,11 +128,11 @@ const styles = StyleSheet.create({
     elevation: 1,
     backgroundColor: "#00BFFF",
     borderRadius: 10,
-    marginHorizontal:"22%",
-    marginTop:20,
+    marginHorizontal:"26%",
+    marginTop:250,
     paddingVertical: 10,
     paddingHorizontal: 12
   }
 })
 
-export default VehicleUpdate;
+export default VehicleDelete;

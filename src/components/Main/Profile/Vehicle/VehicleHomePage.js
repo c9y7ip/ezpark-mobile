@@ -5,6 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Axios from 'axios';
 import { TextInput } from 'react-native-gesture-handler';
 import VehicleInfo from './VehicleInfo';
+import VehicleCreate from './VehicleCraete';
+import VehicleDelete from './VehicleDelete';
 const Stack = createStackNavigator();
 
 
@@ -36,16 +38,16 @@ function Vehicle({navigation}) {
     <View style={styles.container}>   
       <View style={styles.header}></View>
 
-      <TouchableOpacity onPress={()=>navigation.navigate('VehicleInfo')}>
-        <Text>Info</Text>
+      <TouchableOpacity style={styles.btnContainerStyle} onPress={()=>navigation.navigate('VehicleInfo')}>
+        <Text style={styles.btnTextStyle}>Info</Text>
       </TouchableOpacity>    
 
-      <TouchableOpacity onPress={()=>navigation.navigate('VehicleUpdate')}>
-        <Text>Craete</Text>
+      <TouchableOpacity style={styles.btnContainerStyle} onPress={()=>navigation.navigate('VehicleCreate')}>
+        <Text style={styles.btnTextStyle}>Craete</Text>
       </TouchableOpacity>     
 
-      <TouchableOpacity onPress={()=>navigation.navigate('VehicleUpdate')}>
-        <Text>Delete</Text>
+      <TouchableOpacity style={styles.btnContainerStyle} onPress={()=>navigation.navigate('VehicleDelete')}>
+        <Text style={styles.btnTextStyle}>Delete</Text>
       </TouchableOpacity>    
 
 
@@ -65,6 +67,20 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
     borderColor: '#777',
     width: 200,
+  },
+  btnContainerStyle: {
+    alignItems:'center',
+    backgroundColor: '#3F51B5',
+    paddingVertical: 15,
+    margin: 30,
+    marginTop:"10%",
+    borderRadius: 5,
+  },
+  btnTextStyle: {
+    color: '#ffffff',
+    fontSize: 16,
+    textTransform: 'uppercase',
+    textAlign: 'center',
   }
 })
 

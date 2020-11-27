@@ -79,6 +79,8 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+
+      
       <Text style={styles.text}>Log In</Text>
       <Text>{token}</Text>
       <TextInput style={styles.input} placeholder="Email" onChangeText={text => setEmail(text)} />
