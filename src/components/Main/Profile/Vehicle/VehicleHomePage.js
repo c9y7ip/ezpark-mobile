@@ -4,9 +4,9 @@ import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import Axios from 'axios';
 import { TextInput } from 'react-native-gesture-handler';
-import VehicleInfo from './VehicleInfo';
 import VehicleCreate from './VehicleCraete';
 import VehicleDelete from './VehicleDelete';
+import VehicleInfo from './VehicleInfo';
 const Stack = createStackNavigator();
 
 
@@ -18,21 +18,6 @@ function Vehicle({navigation}) {
   const [Province, setProvince] = useState("");
   const [Description, setDescription] = useState("");
   const [Session, setSession] = useState("");
-
-  const getData = async () => {
-    try {
-      const value = await AsyncStorage.getItem("token")
-      if(value !== null) {
-        console.warn(value)
-      }
-    } catch(e) {
-      console.warn(e)
-    }
-  }
-
-  useEffect(()=>{
-    getData()
-  },[])
 
   return (
     <View style={styles.container}>   

@@ -10,6 +10,7 @@ import VehicleInfo from './Vehicle/VehicleInfo';
 import AuthStack from '../../Auth/AuthNavigator';
 import axios from 'axios';
 import config from '../../../api/config';
+import { useFocusEffect } from '@react-navigation/native';
 
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -23,6 +24,15 @@ function profile({navigation}) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [mail, setMail] = useState("");
+
+  useFocusEffect(()=>{
+    async function run(){
+      await getData();
+      await infoConnect();
+    }
+
+    run()
+  },[name])
 
   const getData = async () => {
     try {
@@ -50,15 +60,15 @@ function profile({navigation}) {
     console.log('getting user info')
     console.log(token)
     console.warn(config.baseURL)
-    return axios.get(`${config.baseURL}/auth/users`,{
+    return axios.get(`${config.baseURL}/auth/user`,{
       headers:{Authorization:token}
     })
       .then(res=>{  
-        console.warn(res)
-        // console.log(res.data.name)
-        // setName(res.data.name);
-        // setPhone(res.data.phone);
-        // setMail(res.data.mail);
+        console.warn(res.data)
+        console.log(res.data.name)
+        setName(res.data.name);
+        setPhone(res.data.phone);
+        setMail(res.data.email);
         return res
       })
       .catch(err=>{
@@ -68,10 +78,7 @@ function profile({navigation}) {
 
   }
 
-  useEffect(()=>{
-    getData(),
-    infoConnect()
-  },[])
+
   
   return (
     <View>
@@ -80,14 +87,14 @@ function profile({navigation}) {
         <TouchableOpacity style={styles.btnContainerStyle} onPress={()=>navigation.navigate('Vehicle')}>
           <Text style={styles.btnTextStyle}> Vehicle</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btnContainerStyle}>
+        <TouchableOpacity style={styles.btnContainerStyle} onPress={()=>navigation.navigate('Card')}>
           <Text style={styles.btnTextStyle}> Card </Text>
         </TouchableOpacity>
       </View>
       <Text style={styles.textDisplay}>Name : {name}</Text>
       <Text style={styles.textDisplay}>Phone : {phone}</Text>
       <Text style={styles.textDisplay}>Email : {mail}</Text>
-      <Text style={styles.textDisplay}>vehicle</Text>
+      <Text style={styles.textDisplay}>Vehicle</Text>
       <Text style={styles.textDisplay}>Parking info</Text>
       
       <TouchableOpacity style={{alignItems:"center"}} onPress={signOut}>

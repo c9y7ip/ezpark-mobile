@@ -9,6 +9,7 @@ import VehicleUpdate from './Vehicle/VehicleUpdate';
 import Vehicle from './Vehicle/VehicleHomePage';
 import VehicleCreate from './Vehicle/VehicleCraete';
 import VehicleDelete from './Vehicle/VehicleDelete';
+import Card from './Card/Card';
 
 
 
@@ -22,6 +23,7 @@ function ProfileStack() {
             <Stack.Screen name="VehicleInfo" options={{ headerShown: false }} component={VehicleInfo} />
             <Stack.Screen name="VehicleCreate" options={{ headerShown: false }} component={VehicleCreate} />
             <Stack.Screen name="VehicleDelete" options={{ headerShown: false }} component={VehicleDelete} />
+            <Stack.Screen name="Card" options={{ headerShown: false }} component={Card} />
       </Stack.Navigator>
     );
 }

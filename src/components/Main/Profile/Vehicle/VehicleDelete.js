@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import axios from 'axios';
 import DropDownPicker from 'react-native-dropdown-picker'
 import config from '../../../../api/config';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 const Stack = createStackNavigator();
@@ -18,11 +19,14 @@ function VehicleDelete({navigation}) {
   const [Session, setSession] = useState("");
   const [token, setToken] = useState("");
 
+  let myCar = []
+
+
   let data = {license:license,
             createBy:createBy,
             Province:Province,
-            Description:Description
-            ,Session:Session}
+            Description:Description,
+            Session:Session}
 
   
   const getData = async () => {
@@ -37,8 +41,6 @@ function VehicleDelete({navigation}) {
     }
   }
 
-  let myCar = []
-
   const getCar = ()=>{
     console.log('get car info')
     console.log(token)
@@ -46,10 +48,11 @@ function VehicleDelete({navigation}) {
       headers:{Authorization:token}
     })
       .then(res=>{
+        console.log(res)
         res.data.forEach(e => {
-            console.log(e.license)
-            myCar.push({label:e.license,value:e.license})
-        });
+          console.log(e.license)
+          myCar.push({label:e.license,value:e.license})
+      });
         return res
       })
       .catch(err=>{
@@ -58,9 +61,12 @@ function VehicleDelete({navigation}) {
       })
   }
 
-  useEffect(()=>{
-    getData(),
-    getCar()
+  useFocusEffect(()=>{
+    async function run(){
+      await getData();
+      await getCar();
+    }
+    run()
   },[])
 
   const deleteCar = ()=>{
@@ -72,14 +78,13 @@ function VehicleDelete({navigation}) {
     })
       .then(res=>{
         console.log(res.data)
+        myCar.pop(license)
         return res
       })
       .catch(err=>{
-        console.log(err)
         return err
       })
   }
-
 
   return (
     <View style={styles.container}>   

@@ -30,7 +30,7 @@ const LoginScreen = ({ navigation }) => {
           index: 0,
           routes: [{ name: 'mainpage' }],
         })
-      })
+      }) 
       .catch(err => console.warn(err))
 
     // fetch('http://192.168.0.13:5000/auth/login', {
