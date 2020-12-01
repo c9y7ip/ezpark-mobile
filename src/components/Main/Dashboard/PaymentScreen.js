@@ -87,6 +87,8 @@ const PaymentScreen = (props) => {
             })
             .catch(err => {
                 console.log(err)
+                setStatus('fail-payment')
+                dialogToggle(true)
             })
     }
 
