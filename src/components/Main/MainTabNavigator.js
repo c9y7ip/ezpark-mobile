@@ -4,8 +4,12 @@ import PersonInfo from './Profile/PersonInfo';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { createStackNavigator } from '@react-navigation/stack';
+import ProfileStack from './Profile/ProfileNavigator';
+
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 function MainTabNavigator() {
     return (
@@ -31,7 +35,7 @@ function MainTabNavigator() {
             }}
         >
             <Tab.Screen name="dashboard" component={Dashboard} />
-            <Tab.Screen name="personinfo" component={PersonInfo} />
+            <Tab.Screen name="personinfo" component={ProfileStack} />
         </Tab.Navigator>
     );
 }
