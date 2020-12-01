@@ -38,7 +38,7 @@ function profile({navigation}) {
       const value = await AsyncStorage.getItem("token")
       // setToken(value)
       if (value !== null) {
-        console.warn(value)
+        // console.warn(value)
         return value
       }
     } catch (e) {
@@ -50,6 +50,10 @@ function profile({navigation}) {
     try{
       await AsyncStorage.removeItem("token")
       navigation.navigate('auth')
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'auth' }],
+      })
     }catch(e){
       console.warn(e.message)
     }
@@ -59,12 +63,12 @@ function profile({navigation}) {
 
     console.log('getting user info')
     console.log(token)
-    console.warn(config.baseURL)
+    // console.warn(config.baseURL)
     return axios.get(`${config.baseURL}/auth/user`,{
       headers:{Authorization:token}
     })
       .then(res=>{  
-        console.warn(res.data)
+        // console.warn(res.data)
         console.log(res.data.name)
         setName(res.data.name);
         setPhone(res.data.phone);
@@ -91,10 +95,10 @@ function profile({navigation}) {
         </TouchableOpacity>
       </View>
       <Text style={styles.textDisplay}>Name : {name}</Text>
-      <Text style={styles.textDisplay}>Phone : {phone}</Text>
       <Text style={styles.textDisplay}>Email : {mail}</Text>
-      <Text style={styles.textDisplay}>Vehicle</Text>
-      <Text style={styles.textDisplay}>Parking info</Text>
+      <Text style={styles.textDisplay}>Phone : {phone}</Text>
+      {/* <Text style={styles.textDisplay}>Vehicle</Text> */}
+      {/* <Text style={styles.textDisplay}>Parking info</Text> */}
       
       <TouchableOpacity style={{alignItems:"center"}} onPress={signOut}>
           <Text style={styles.logout}> LOG OUT </Text>
@@ -125,12 +129,13 @@ const styles = StyleSheet.create({
   logout: {
     fontSize: 20,
     color:"red",
-    marginTop:"30%",
+    marginTop:"45%",
   },
   textDisplay:{
     alignContent:'space-around',
     fontWeight:'bold',
     fontSize:20,
+    marginLeft:10
   }
 })
 

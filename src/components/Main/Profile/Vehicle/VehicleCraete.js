@@ -1,5 +1,5 @@
 import React, { useState,useEffect,PropTypes  }  from 'react';
-import { Button, SafeAreaView, StyleSheet, Text, TextInput,TouchableOpacity,AsyncStorage, View,Image ,ViewBase, Picker  } from 'react-native';
+import { Button, SafeAreaView, StyleSheet, Text, TextInput,TouchableOpacity,AsyncStorage, View,Image ,ViewBase, Picker, Alert  } from 'react-native';
 import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import axios from 'axios';
@@ -34,7 +34,8 @@ function VehicleCreate({navigation}) {
       const value = await AsyncStorage.getItem("token")
       setToken(value)
       if(value !== null) {
-        console.warn(value)
+        // console.warn(value)
+        return value
       }
     } catch(e) {
       console.warn(e)
@@ -56,9 +57,13 @@ function VehicleCreate({navigation}) {
         console.log(res)
         return res
       })
+      .then(res=>{
+        navigation.navigate('profile')
+        Alert.alert("Vehicle created !")
+      })
       .catch(err=>{
         console.log(err)
-        return err
+        Alert.alert("All fields need to be fills")
       })
 
   }
