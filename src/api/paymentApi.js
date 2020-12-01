@@ -33,7 +33,20 @@ const createCustomer = (token) => {
         })
 }
 
+const charge = (amount) => {
+    return apiClient.post('/payment/charge', {
+        totalCost: amount
+    }).then(res => {
+        console.log(res.data)
+        return res.data
+    }).catch(err => {
+        console.log(err)
+        throw err
+    })
+}
+
 module.exports = {
     createToken: createToken,
-    createCustomer: createCustomer
+    createCustomer: createCustomer,
+    charge: charge
 }

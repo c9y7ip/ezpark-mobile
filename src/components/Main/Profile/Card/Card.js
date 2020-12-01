@@ -34,6 +34,7 @@ function Card({route,navigation}) {
       })
       .then((res) => {
         console.log(res)
+        navigation.navigate('profile')
       })
       .catch(err => console.log(err))
   }

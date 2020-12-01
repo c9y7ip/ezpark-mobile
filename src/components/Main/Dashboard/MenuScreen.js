@@ -18,8 +18,6 @@ function MenuScreen() {
     <View style={styles.container} >
       <Text style={styles.title}>Dashboard</Text>
       <CustomButton text="Scan To Pay" handler={onPressPay} customStyle={btnStyle} />
-      <CustomButton text="Payment" handler={navigatePay} />
-
     </View>
   );
 }

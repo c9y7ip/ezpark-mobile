@@ -5,6 +5,9 @@ import CustomButton from '../../GlobalComp/CustomButton'
 import DropdownComp from '../../GlobalComp/DropdownComp'
 import { useNavigation } from '@react-navigation/native'
 import PopUpDialog from '../../GlobalComp/PopUpDialog'
+import carApi from '../../../api/carApi'
+import parkingApi from '../../../api/parkingApi'
+import paymentApi from '../../../api/paymentApi'
 
 const ScreenContainer = styled.SafeAreaView`
     justify-content: center;
@@ -19,15 +22,24 @@ const DropdownWrapper = styled.View`
     width: 100%
 `
 const HourText = styled.Text`
-    font-size: 50px;
+    font-size: 30px;
     margin-left: 20px;
 `
 const DurationSection = styled.View`
     margin-top: 30px
     flex-direction: row;
 `
+const InfoText = styled.Text`
 
-const PaymentScreen = () => {
+`
+const ParkingSection = styled.View`
+    margin-top: 50px;
+`
+
+
+const PaymentScreen = (props) => {
+    const { parkingId } = props.route.params
+    const [parking, setParking] = useState(null)
     const [car, selectCar] = useState(null)
     const [cars, setCars] = useState([])
     const [showDialog, dialogToggle] = useState(false)
@@ -35,23 +47,52 @@ const PaymentScreen = () => {
     const [duration, onChangeDuration] = useState();
 
     const navigation = useNavigation()
-
+    console.log(parkingId)
     useEffect(() => {
-        fetchCars()
+        fetch()
     }, [])
 
-    const fetchCars = () => {
-        //TODO: fetch cars by userId.
+    const fetch = () => {
+        //TODO: fetch cars by userId and parking by parkingId
+        parkingApi.fetchParking(parkingId)
+            .then(response => {
+                setParking(response)
+                return carApi.fetchCars()
+            })
+            .then(response => {
+                const formatRes = formatCarResponse(response)
+                console.log(formatRes)
+                setCars(formatRes)
+            })
     }
 
     const onPressPay = () => {
-        //TODO implement payment logic
-        setStatus('success-payment')
-        dialogToggle(true)
+
+        const totalCost = parking.rate * duration
+        const payload = {
+            carId: car,
+            duration: duration,
+            parkingId: parkingId,
+            totalCost: totalCost
+        }
+        paymentApi.charge(totalCost)
+            .then(res => {
+                console.log("Next step: create session")
+                return parkingApi.createSession(payload)
+            })
+            .then(res => {
+                console.log(res)
+                setStatus('success-payment')
+                dialogToggle(true)
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
 
-    const onSelect = () => {
-
+    const onSelect = (carId) => {
+        console.log(carId)
+        selectCar(carId)
     }
 
     const navigateHandler = () => {
@@ -61,6 +102,11 @@ const PaymentScreen = () => {
     return (
         <ScreenContainer>
             <TitleText>Payment Screen</TitleText>
+            {parking &&
+                <ParkingSection>
+                    <InfoText>{getAddress(parking.address)}</InfoText>
+                    <InfoText>{`Cost: $${parking.rate} CAD / hour`}</InfoText>
+                </ParkingSection>}
             <DropdownWrapper>
                 <DropdownComp
                     items={cars}
@@ -73,14 +119,21 @@ const PaymentScreen = () => {
                 <TextInput
                     style={styles.input}
                     onChangeText={text => onChangeDuration(text)}
-                    value={value}
                     keyboardType={'numeric'}
                 />
-                <HourText>Hr</HourText>
+                <HourText>Hour(s)</HourText>
             </DurationSection>
+            {parking && duration && <View style={styles.totalCost} >
+                <Text>{`Total Cost: $${duration * parking.rate} CAD`}</Text>
+            </View>}
 
             <View style={styles.wrapper} >
-                <CustomButton text="Confirm Payment" handler={onPressPay} customStyle={styles.btn} />
+                <CustomButton
+                    text="Confirm Payment"
+                    handler={onPressPay}
+                    customStyle={styles.btn}
+                    disabled={!(duration && parking && car)}
+                />
             </View>
             <PopUpDialog
                 visible={showDialog}
@@ -103,7 +156,7 @@ const styles = StyleSheet.create({
         width: '100%',
         alignItems: 'center',
         alignSelf: 'flex-end',
-        marginTop: 500,
+        marginTop: 200,
     },
     input: {
         width: 100,
@@ -112,5 +165,22 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         backgroundColor: 'white',
         borderRadius: 10
+    },
+    totalCost: {
+        marginTop: 30
     }
 });
+
+const formatCarResponse = (cars) => {
+    let formatedList = cars.map((car) => {
+        return {
+            label: `${car.license}: ${car.description}`,
+            value: car._id
+        }
+    })
+    return formatedList
+}
+
+const getAddress = (json) => {
+    return `Address: ${json.street} ${json.city} ${json.province}`
+}
