@@ -5,11 +5,14 @@ import { createStackNavigator } from '@react-navigation/stack';
 import axios from 'axios';
 import config from '../../../../api/config';
 import { useFocusEffect } from '@react-navigation/native';
+import apiClient from '../../../../api/apiClient';
+import { ScrollView } from 'react-native-gesture-handler';
+
 
 function VehicleInfo({ navigation }) {
 
   const [display, setDisplay] = useState([]);
-  const [token, setToken] = useState("");
+  // const [token, setToken] = useState("");
 
   // const [license, setLicense] = useState([]);
   // const [createBy, setCreatedBy] = useState([]);
@@ -20,68 +23,60 @@ function VehicleInfo({ navigation }) {
   const getToken = async () => {
     try {
       const value = await AsyncStorage.getItem("token")
-      setToken(value)
+      // setToken(value)
       if (value !== null) {
         console.warn(value)
+        return value
       }
     } catch (e) {
       console.warn(e)
     }
   }
 
-  const connect = () => {
+  const connect = (token) => {
     console.log('get car info')
     console.log(token)
-    axios.get(`${config.baseURL}/car/get`, {
+    return axios.get(`${config.baseURL}/car/get`, {
       headers: { Authorization: token }
     })
       .then(res => {
         console.log(res.data)  // data what I need
-
-        setDisplay(res.data)
-
-        console.warn(display)
-        return res
+        setDisplay(res.data) // that's correct
+        return res.data
       })
+      .then( data =>{console.warn(display)})
       .catch(err => {
         console.log(err)
-        return err
       })
   }
 
-  //not able to connect server at the first time
-  
-  // useEffect(()=>{
-  //   getToken();
-  //   connect();
-  // })
-
-  // useFocusEffect(()=>{
-  //   async function run(){
-  //     await getToken();
-  //     await connect();
-  //   }
-  //   run()
-  // },)
+  useEffect(()=>{
+    async function run(){
+      const token =  await getToken();
+      console.log("......",token)
+      await connect(token);
+    }
+    run()
+  },[])
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.header}></View>
-
-      <Text style={styles.label}>License: {display.license}</Text>
-      <Text style={styles.label}>Type :</Text>
-      <Text style={styles.label}>Province : </Text>
-
-      <View style={{ flexDirection: "row" }}>
-        <Text style={styles.label}>Description:</Text>
-        <TouchableOpacity style={styles.saveButtonCon} onPress={() => navigation.navigate('VehicleUpdate')}>
-          <Text style={styles.saveButton}> Edit</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={{ borderBottomColor: 'black', borderBottomWidth: 1, marginTop: 10 }} />
-
-    </View>
+      
+      <ScrollView>
+      {
+        display.map((car)=>(
+          <ScrollView>
+            <Text style={styles.label}>License: {car.license}</Text>
+            <Text style={styles.label}>Type: {car.type}</Text>
+            <Text style={styles.label}>Province: {car.province}</Text>
+            <Text style={styles.label}>Description: {car.description}</Text>
+            <View style={{ borderBottomColor: 'black', borderBottomWidth: 1, marginTop: 20 }} />
+          </ScrollView>
+        ))
+      }
+      </ScrollView>
+    </ScrollView>
   )
 }
 

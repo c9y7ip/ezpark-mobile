@@ -20,28 +20,28 @@ const Drawer = createDrawerNavigator();
 
 function profile({navigation}) {
 
-  const [token, setToken] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [mail, setMail] = useState("");
 
-  useFocusEffect(()=>{
+  useEffect(()=>{
     async function run(){
-      await getData();
-      await infoConnect();
+      const token =  await getToken();
+      console.log("......",token)
+      await infoConnect(token);
     }
-
     run()
-  },[name])
+  },[])
 
-  const getData = async () => {
+  const getToken = async () => {
     try {
       const value = await AsyncStorage.getItem("token")
-      setToken(value)
-      if(value !== null) {
+      // setToken(value)
+      if (value !== null) {
         console.warn(value)
+        return value
       }
-    } catch(e) {
+    } catch (e) {
       console.warn(e)
     }
   }
@@ -55,7 +55,7 @@ function profile({navigation}) {
     }
   }
 
-  const infoConnect = ()=>{
+  const infoConnect = (token)=>{
 
     console.log('getting user info')
     console.log(token)
@@ -79,7 +79,6 @@ function profile({navigation}) {
   }
 
 
-  
   return (
     <View>
       <View style={styles.header}></View>
@@ -126,7 +125,7 @@ const styles = StyleSheet.create({
   logout: {
     fontSize: 20,
     color:"red",
-    marginTop:"60%",
+    marginTop:"30%",
   },
   textDisplay:{
     alignContent:'space-around',
