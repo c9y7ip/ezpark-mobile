@@ -30,7 +30,7 @@ const LoginScreen = ({ navigation }) => {
           index: 0,
           routes: [{ name: 'mainpage' }],
         })
-      }) 
+      })
       .catch(err => console.warn(err))
 
     // fetch('http://192.168.0.13:5000/auth/login', {
@@ -79,8 +79,6 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-
-      
       <Text style={styles.text}>Log In</Text>
       <Text>{token}</Text>
       <TextInput style={styles.input} placeholder="Email" onChangeText={text => setEmail(text)} />

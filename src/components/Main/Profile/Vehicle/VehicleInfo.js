@@ -1,124 +1,121 @@
-import React, { useState, useEffect } from 'react';
-import { Button, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, AsyncStorage, View, Image, ViewBase, Alert } from 'react-native';
+import React, { useState,useEffect }  from 'react';
+import { Button, SafeAreaView, StyleSheet, Text, TextInput,TouchableOpacity,AsyncStorage, View,Image ,ViewBase } from 'react-native';
 import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import axios from 'axios';
-import config from '../../../../api/config';
-import { useFocusEffect } from '@react-navigation/native';
+import VehicleUpdate from './VehicleUpdate';
 
-function VehicleInfo({ navigation }) {
+const Stack = createStackNavigator();
+const baseURL = 'http://192.168.0.13:5000'
+// const baseURL = 'http://35.202.57.20:5000'
 
-  const [display, setDisplay] = useState([]);
+function VehicleInfo({navigation}) {
+
+  const [license, setLicense] = useState("");
+  const [createBy, setCreatedBy] = useState("");
+  const [Province, setProvince] = useState("");
+  const [Description, setDesciption] = useState("");
+  const [Session, setSession] = useState("");
   const [token, setToken] = useState("");
 
-  // const [license, setLicense] = useState([]);
-  // const [createBy, setCreatedBy] = useState([]);
-  // const [province, setProvince] = useState([]);
-  // const [description, setDescription] = useState([]);
-  // const [type, setType] = useState([]);
+  let data = {license:license,createBy:createBy,Province:Province,Description:Description,Session:Session}
 
-  const getToken = async () => {
+  
+  const getData = async () => {
     try {
       const value = await AsyncStorage.getItem("token")
       setToken(value)
-      if (value !== null) {
+      if(value !== null) {
         console.warn(value)
       }
-    } catch (e) {
+    } catch(e) {
       console.warn(e)
     }
   }
 
-  const connect = () => {
-    console.log('get car info')
+  useEffect(()=>{
+    getData()
+  },[])
+
+  const connect = ()=>{
+
+    console.log('Update car info')
     console.log(token)
-    axios.get(`${config.baseURL}/car/get`, {
-      headers: { Authorization: token }
+    return axios.put(`${baseURL}/car/edit`,{data},{
+      headers:{Authorization:token}
     })
-      .then(res => {
-        console.log(res.data)  // data what I need
-
-        setDisplay(res.data)
-
-        console.warn(display)
+      .then(res=>{
+        console.log(res)
         return res
       })
-      .catch(err => {
+      .catch(err=>{
         console.log(err)
         return err
       })
+
   }
 
-  //not able to connect server at the first time
-  
-  // useEffect(()=>{
-  //   getToken();
-  //   connect();
-  // })
-
-  // useFocusEffect(()=>{
-  //   async function run(){
-  //     await getToken();
-  //     await connect();
-  //   }
-  //   run()
-  // },)
-
   return (
-    <View style={styles.container}>
+    <View style={styles.container}>   
       <View style={styles.header}></View>
 
-      <Text style={styles.label}>License: {display.license}</Text>
-      <Text style={styles.label}>Type :</Text>
-      <Text style={styles.label}>Province : </Text>
+      <TouchableOpacity style={styles.saveButtonCon} onPress={()=>navigation.navigate('VehicleUpdate')}>
+        <Text style={styles.saveButton}> Edit</Text>
+      </TouchableOpacity>     
+         
+      <Text style={styles.label}>License</Text>
+      <TextInput style={styles.textInput} placeholder="license" onChangeText={text=>setLicense(text)} />
 
-      <View style={{ flexDirection: "row" }}>
-        <Text style={styles.label}>Description:</Text>
-        <TouchableOpacity style={styles.saveButtonCon} onPress={() => navigation.navigate('VehicleUpdate')}>
-          <Text style={styles.saveButton}> Edit</Text>
-        </TouchableOpacity>
-      </View>
+      <Text style={styles.label}>Created By</Text>
+      <TextInput style={styles.textInput} placeholder="Created By" onChangeText={text=>setCreatedBy(text)} />
 
-      <View style={{ borderBottomColor: 'black', borderBottomWidth: 1, marginTop: 10 }} />
+      <Text style={styles.label}>Province</Text>
+      <TextInput style={styles.textInput} placeholder="Province" onChangeText={text=>setProvince(text)} />
+
+      <Text style={styles.label}>Description</Text>
+      <TextInput style={styles.textInput} placeholder="Description" onChangeText={text=>setDesciption(text)} />
+
+      <Text style={styles.label}>Session</Text>
+      <TextInput style={styles.textInput} placeholder="Session" onChangeText={text=>setSession(text)} />
+
 
     </View>
-  )
+    );
 }
 
 const styles = StyleSheet.create({
-  label: {
+  label:{
     marginLeft: 15,
     marginTop: 10,
   },
-  header: {
+  header:{
     backgroundColor: "#00BFFF",
-    height: 200,
-    marginBottom: 5,
+    height:200,
   },
   textInput: {
     padding: 5,
     marginLeft: 50,
-    margin: 5,
-    marginRight: 50,
-    borderBottomColor: '#000',
-    borderBottomWidth: 2
+    margin:5,
+    marginRight:50,
+    borderBottomColor: '#000', 
+    borderBottomWidth: 2     
   },
-  saveButton: {
-    fontSize: 15,
+  saveButton:{
+    fontSize: 18,
     color: "#fff",
     fontWeight: "bold",
     alignSelf: "center",
-    textTransform: "uppercase",
+    textTransform: "uppercase"
   },
-  saveButtonCon: {
-    width: "25%",
+  saveButtonCon:{
+    width:"50%",
     elevation: 1,
     backgroundColor: "#00BFFF",
     borderRadius: 10,
-    marginHorizontal: "30%",
-    // marginTop:5,
-    paddingVertical: 5,
-    paddingHorizontal: 12,
+    marginHorizontal:"22%",
+    marginTop:20,
+    paddingVertical: 10,
+    paddingHorizontal: 12
   }
 })
 

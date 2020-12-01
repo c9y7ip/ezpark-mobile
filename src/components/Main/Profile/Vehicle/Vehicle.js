@@ -4,8 +4,6 @@ import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import Axios from 'axios';
 import { TextInput } from 'react-native-gesture-handler';
-import VehicleCreate from './VehicleCraete';
-import VehicleDelete from './VehicleDelete';
 import VehicleInfo from './VehicleInfo';
 const Stack = createStackNavigator();
 
@@ -19,20 +17,35 @@ function Vehicle({navigation}) {
   const [Description, setDescription] = useState("");
   const [Session, setSession] = useState("");
 
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem("token")
+      if(value !== null) {
+        console.warn(value)
+      }
+    } catch(e) {
+      console.warn(e)
+    }
+  }
+
+  useEffect(()=>{
+    getData()
+  },[])
+
   return (
     <View style={styles.container}>   
       <View style={styles.header}></View>
 
-      <TouchableOpacity style={styles.btnContainerStyle} onPress={()=>navigation.navigate('VehicleInfo')}>
-        <Text style={styles.btnTextStyle}>Info</Text>
+      <TouchableOpacity onPress={()=>navigation.navigate('VehicleInfo')}>
+        <Text>Info</Text>
       </TouchableOpacity>    
 
-      <TouchableOpacity style={styles.btnContainerStyle} onPress={()=>navigation.navigate('VehicleCreate')}>
-        <Text style={styles.btnTextStyle}>Craete</Text>
+      <TouchableOpacity onPress={()=>navigation.navigate('VehicleUpdate')}>
+        <Text>Craete</Text>
       </TouchableOpacity>     
 
-      <TouchableOpacity style={styles.btnContainerStyle} onPress={()=>navigation.navigate('VehicleDelete')}>
-        <Text style={styles.btnTextStyle}>Delete</Text>
+      <TouchableOpacity onPress={()=>navigation.navigate('VehicleUpdate')}>
+        <Text>Delete</Text>
       </TouchableOpacity>    
 
 
@@ -52,20 +65,6 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
     borderColor: '#777',
     width: 200,
-  },
-  btnContainerStyle: {
-    alignItems:'center',
-    backgroundColor: '#3F51B5',
-    paddingVertical: 15,
-    margin: 30,
-    marginTop:"10%",
-    borderRadius: 5,
-  },
-  btnTextStyle: {
-    color: '#ffffff',
-    fontSize: 16,
-    textTransform: 'uppercase',
-    textAlign: 'center',
   }
 })
 
