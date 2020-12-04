@@ -1,5 +1,5 @@
 import React, { useState,useEffect }  from 'react';
-import { Button, SafeAreaView, StyleSheet, Text, TextInput,TouchableOpacity,AsyncStorage, View,Image ,ViewBase } from 'react-native';
+import { Button, SafeAreaView, StyleSheet, Text, TextInput,TouchableOpacity,AsyncStorage, View,Image ,ViewBase, Alert } from 'react-native';
 import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import axios from 'axios';
@@ -34,7 +34,8 @@ function VehicleDelete({navigation}) {
       const value = await AsyncStorage.getItem("token")
       setToken(value)
       if(value !== null) {
-        console.warn(value)
+        // console.warn(value)
+        return value
       }
     } catch(e) {
       console.warn(e)
@@ -80,6 +81,10 @@ function VehicleDelete({navigation}) {
         console.log(res.data)
         myCar.pop(license)
         return res
+      })
+      .then(res=>{
+        navigation.navigate('profile')
+        Alert.alert("Vehicle deleted !")
       })
       .catch(err=>{
         return err

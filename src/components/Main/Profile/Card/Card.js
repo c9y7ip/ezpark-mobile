@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, View,Image ,ViewBase } from 'react-native';
+import { Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, View,Image ,ViewBase, Alert } from 'react-native';
 import 'react-native-gesture-handler';
 import styled from 'styled-components/native'
 import LabeledInput from '../../../GlobalComp/LabeledInput'
@@ -26,7 +26,6 @@ function Card({route,navigation}) {
     expireDate: '',
     cvv: '',
   })
-
   const addCard = () => {
     paymentApi.createToken(state)
       .then((card) => {
@@ -35,13 +34,14 @@ function Card({route,navigation}) {
       .then((res) => {
         console.log(res)
         navigation.navigate('profile')
+        Alert.alert("Card appended !")
       })
-      .catch(err => console.log(err))
+      .catch(err => Alert.alert("Information is not valid"))
   }
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backbtn} onPress={() => navigation.navigate('Profile')} >
+      <TouchableOpacity style={styles.backbtn} onPress={() => navigation.navigate('profile')} >
         <Ionicons name="ios-arrow-back" size={24} color="black" />
       </TouchableOpacity>    
 

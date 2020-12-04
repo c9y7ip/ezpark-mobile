@@ -25,7 +25,7 @@ function VehicleInfo({ navigation }) {
       const value = await AsyncStorage.getItem("token")
       // setToken(value)
       if (value !== null) {
-        console.warn(value)
+        // console.warn(value)
         return value
       }
     } catch (e) {
@@ -44,7 +44,7 @@ function VehicleInfo({ navigation }) {
         setDisplay(res.data) // that's correct
         return res.data
       })
-      .then( data =>{console.warn(display)})
+      // .then( data =>{console.warn(display)})
       .catch(err => {
         console.log(err)
       })
@@ -62,7 +62,6 @@ function VehicleInfo({ navigation }) {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}></View>
-      
       <ScrollView>
       {
         display.map((car)=>(

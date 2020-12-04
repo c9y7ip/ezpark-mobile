@@ -25,10 +25,11 @@ function RegisterScreen({ navigation }) {
         .then((user) => {
           console.log(user)
           //DO something with user.
-          navigation.navigate('mainpage')
+          navigation.navigate('home')
+          Alert.alert("Account created !")
         }).catch(err => {
           console.log(err)
-          alert(err)
+          Alert.alert("All fields need to be fill")
         })
 
     } else {

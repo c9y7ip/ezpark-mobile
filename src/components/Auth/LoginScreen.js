@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import { TextInput } from 'react-native-gesture-handler';
-import { Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, AsyncStorage, Image, ViewBase, } from 'react-native';
+import { Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, AsyncStorage, Image, ViewBase, Alert, } from 'react-native';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import authApi from '../../api/authApi'
 
@@ -19,7 +19,6 @@ const LoginScreen = ({ navigation }) => {
   const [token, setToken] = useState("");
   const [password, setPassword] = useState("");
 
-
   const connect = () => {
     authApi.login(email, password)
       .then((response) => {
@@ -31,35 +30,7 @@ const LoginScreen = ({ navigation }) => {
           routes: [{ name: 'mainpage' }],
         })
       }) 
-      .catch(err => console.warn(err))
-
-    // fetch('http://192.168.0.13:5000/auth/login', {
-    //   method: 'post',
-
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json'
-    //   },
-
-    //   body: JSON.stringify({
-    //     email: email,
-    //     password: password
-    //   })
-    //   })
-    //   .then((res)=>{
-    //     return res.text()
-    //   })
-    //   .then(async (tok)=>{
-    //     try{
-    //       await AsyncStorage.setItem("token",tok)
-    //       navigation.navigate('mainpage')
-    //     }catch(e){
-    //       console.warn(e)
-    //     }
-    //   })
-    //   .catch(function (error) {
-    //     console.error(error.message);
-    //   })
+      .catch(err => (Alert.alert("","Unregister acccount",[{text:"OK"}])))
   }
 
   const getData = async () => {
